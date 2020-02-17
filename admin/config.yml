@@ -1,0 +1,923 @@
+backend:
+  name: git-gateway
+  branch: master
+media_folder: images
+public_folder: /images
+collections:
+  - name: config
+    label: Global site config
+    files:
+      - name: config
+        label: Global site config
+        file: _config.yml
+        fields:
+          - widget: hidden
+            name: baseurl
+            label: Base URL
+            required: false
+            hint: Serve the website from the given base URL
+          - widget: hidden
+            name: permalink
+            label: Permalink
+            required: false
+            default: '/posts/:slug:output_ext'
+            hint: 'The output path for your pages, posts, or collections.'
+          - widget: string
+            name: title
+            label: Title
+            required: false
+          - widget: string
+            name: snipcart_js
+            label: Snipcart JavaScript file URL
+            required: false
+          - widget: string
+            name: snipcart_css
+            label: Snipcart CSS file URL
+            required: false
+          - widget: string
+            name: snipcart_api_key
+            label: Snipcart public API key
+            required: false
+          - widget: object
+            name: logos
+            label: Logos
+            required: false
+            fields:
+              - widget: object
+                name: light
+                label: Light
+                required: false
+                fields:
+                  - widget: image
+                    name: optimized
+                    label: Optimized (WEBP or similar)
+                    required: false
+                  - widget: image
+                    name: fallback
+                    label: Fallback (JPG or PNG)
+                    required: false
+              - widget: object
+                name: dark
+                label: Dark
+                required: false
+                fields:
+                  - widget: image
+                    name: optimized
+                    label: Optimized (WEBP or similar)
+                    required: false
+                  - widget: image
+                    name: fallback
+                    label: Fallback (JPG or PNG)
+                    required: false
+          - widget: select
+            name: palette
+            label: Color Palette
+            required: false
+            options:
+              - default
+          - widget: hidden
+            name: palettes
+            label: Palettes
+            required: false
+          - widget: hidden
+            name: sass
+            label: Sass
+            required: false
+          - widget: hidden
+            name: plugins
+            label: Plugins
+            required: false
+          - widget: hidden
+            name: exclude
+            label: Exclude
+            required: false
+            hint: Exclude directories and/or files from the conversion.
+  - name: index
+    label: Home
+    files:
+      - name: index
+        label: Home
+        file: index.md
+        fields:
+          - widget: string
+            name: title
+            label: Title
+            required: false
+          - widget: hidden
+            name: isHome
+            label: Is home page
+            required: false
+          - widget: object
+            name: menus
+            label: Home Menus
+            required: false
+            hint: Which menus should this page show up in
+            fields:
+              - widget: object
+                name: main
+                label: Main menu item
+                required: false
+                hint: Main menu item for this page
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: false
+                    hint: The title of the menu item
+                  - widget: number
+                    name: weight
+                    label: Weight
+                    required: false
+                    hint: Position for sorting
+                    valueType: int
+                  - widget: string
+                    name: identifier
+                    label: Identifier
+                    required: false
+                    hint: >-
+                      The identifier of a menu item could be used as a parent
+                      menu of another menu item
+              - widget: object
+                name: categories
+                label: Categories menu item
+                required: false
+                hint: Categories menu item for this page
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: false
+                    hint: The title of the menu item
+                  - widget: number
+                    name: weight
+                    label: Weight
+                    required: false
+                    hint: Position for sorting
+                    valueType: int
+                  - widget: string
+                    name: identifier
+                    label: Identifier
+                    required: false
+                    hint: >-
+                      The identifier of a menu item could be used as a parent
+                      menu of another menu item
+          - widget: hidden
+            name: layout
+            label: Layout
+            required: true
+            default: index
+          - widget: markdown
+            name: body
+            label: Content
+            required: false
+            hint: Page content
+  - name: page
+    label: Pages
+    folder: /
+    create: true
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - widget: object
+        name: menus
+        label: Page Menus
+        required: false
+        hint: Which menus should this page show up in
+        fields:
+          - widget: object
+            name: main
+            label: Main menu item
+            required: false
+            hint: Main menu item for this page
+            fields:
+              - widget: string
+                name: title
+                label: Title
+                required: false
+                hint: The title of the menu item
+              - widget: number
+                name: weight
+                label: Weight
+                required: false
+                hint: Position for sorting
+                valueType: int
+              - widget: string
+                name: identifier
+                label: Identifier
+                required: false
+                hint: >-
+                  The identifier of a menu item could be used as a parent menu
+                  of another menu item
+          - widget: object
+            name: categories
+            label: Categories menu item
+            required: false
+            hint: Categories menu item for this page
+            fields:
+              - widget: string
+                name: title
+                label: Title
+                required: false
+                hint: The title of the menu item
+              - widget: number
+                name: weight
+                label: Weight
+                required: false
+                hint: Position for sorting
+                valueType: int
+              - widget: string
+                name: identifier
+                label: Identifier
+                required: false
+                hint: >-
+                  The identifier of a menu item could be used as a parent menu
+                  of another menu item
+      - widget: hidden
+        name: layout
+        label: Layout
+        required: true
+        default: page
+      - widget: markdown
+        name: body
+        label: Content
+        required: false
+        hint: Page content
+    filter:
+      field: layout
+      value: page
+  - name: store
+    label: Store
+    files:
+      - name: store
+        label: Store
+        file: store.md
+        fields:
+          - widget: string
+            name: title
+            label: Title
+            required: false
+          - widget: object
+            name: menus
+            label: Store Menus
+            required: false
+            hint: Which menus should this page show up in
+            fields:
+              - widget: object
+                name: main
+                label: Main menu item
+                required: false
+                hint: Main menu item for this page
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: false
+                    hint: The title of the menu item
+                  - widget: number
+                    name: weight
+                    label: Weight
+                    required: false
+                    hint: Position for sorting
+                    valueType: int
+                  - widget: string
+                    name: identifier
+                    label: Identifier
+                    required: false
+                    hint: >-
+                      The identifier of a menu item could be used as a parent
+                      menu of another menu item
+              - widget: object
+                name: categories
+                label: Categories menu item
+                required: false
+                hint: Categories menu item for this page
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: false
+                    hint: The title of the menu item
+                  - widget: number
+                    name: weight
+                    label: Weight
+                    required: false
+                    hint: Position for sorting
+                    valueType: int
+                  - widget: string
+                    name: identifier
+                    label: Identifier
+                    required: false
+                    hint: >-
+                      The identifier of a menu item could be used as a parent
+                      menu of another menu item
+          - widget: hidden
+            name: layout
+            label: Layout
+            required: true
+            default: store
+  - name: faq
+    label: FAQ
+    files:
+      - name: faq
+        label: FAQ
+        file: faq.md
+        fields:
+          - widget: string
+            name: title
+            label: Title
+            required: false
+          - widget: string
+            name: headline
+            label: Headline
+            required: false
+          - widget: markdown
+            name: introduction
+            label: Introduction
+            required: false
+          - widget: list
+            name: questions
+            label: Questions
+            required: false
+            hint: List of questions to show on the FAQ page
+            fields:
+              - widget: string
+                name: question
+                label: Question
+                required: false
+              - widget: markdown
+                name: answer
+                label: Answer
+                required: false
+          - widget: object
+            name: menus
+            label: FAQ Menus
+            required: false
+            hint: Which menus should this page show up in
+            fields:
+              - widget: object
+                name: main
+                label: Main menu item
+                required: false
+                hint: Main menu item for this page
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: false
+                    hint: The title of the menu item
+                  - widget: number
+                    name: weight
+                    label: Weight
+                    required: false
+                    hint: Position for sorting
+                    valueType: int
+                  - widget: string
+                    name: identifier
+                    label: Identifier
+                    required: false
+                    hint: >-
+                      The identifier of a menu item could be used as a parent
+                      menu of another menu item
+              - widget: object
+                name: categories
+                label: Categories menu item
+                required: false
+                hint: Categories menu item for this page
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: false
+                    hint: The title of the menu item
+                  - widget: number
+                    name: weight
+                    label: Weight
+                    required: false
+                    hint: Position for sorting
+                    valueType: int
+                  - widget: string
+                    name: identifier
+                    label: Identifier
+                    required: false
+                    hint: >-
+                      The identifier of a menu item could be used as a parent
+                      menu of another menu item
+          - widget: hidden
+            name: layout
+            label: Layout
+            required: true
+            default: faq
+          - widget: markdown
+            name: body
+            label: Content
+            required: false
+            hint: Page content
+  - name: about
+    label: About
+    files:
+      - name: about
+        label: About
+        file: about.md
+        fields:
+          - widget: string
+            name: title
+            label: Title
+            required: false
+          - widget: string
+            name: headline
+            label: Headline
+            required: false
+          - widget: markdown
+            name: introduction
+            label: Introduction
+            required: false
+          - widget: list
+            name: bulletpoints
+            label: Bulletpoints
+            required: false
+            hint: List of bulletpoints to show on About page
+            fields:
+              - widget: string
+                name: title
+                label: Title
+                required: false
+              - widget: markdown
+                name: description
+                label: Description
+                required: false
+              - widget: object
+                name: image
+                label: Image
+                required: false
+                fields:
+                  - widget: image
+                    name: optimized
+                    label: Optimized (WEBP or similar)
+                    required: false
+                  - widget: image
+                    name: fallback
+                    label: Fallback (JPG or PNG)
+                    required: false
+          - widget: object
+            name: menus
+            label: About Menus
+            required: false
+            hint: Which menus should this page show up in
+            fields:
+              - widget: object
+                name: main
+                label: Main menu item
+                required: false
+                hint: Main menu item for this page
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: false
+                    hint: The title of the menu item
+                  - widget: number
+                    name: weight
+                    label: Weight
+                    required: false
+                    hint: Position for sorting
+                    valueType: int
+                  - widget: string
+                    name: identifier
+                    label: Identifier
+                    required: false
+                    hint: >-
+                      The identifier of a menu item could be used as a parent
+                      menu of another menu item
+              - widget: object
+                name: categories
+                label: Categories menu item
+                required: false
+                hint: Categories menu item for this page
+                fields:
+                  - widget: string
+                    name: title
+                    label: Title
+                    required: false
+                    hint: The title of the menu item
+                  - widget: number
+                    name: weight
+                    label: Weight
+                    required: false
+                    hint: Position for sorting
+                    valueType: int
+                  - widget: string
+                    name: identifier
+                    label: Identifier
+                    required: false
+                    hint: >-
+                      The identifier of a menu item could be used as a parent
+                      menu of another menu item
+          - widget: hidden
+            name: layout
+            label: Layout
+            required: true
+            default: about
+          - widget: markdown
+            name: body
+            label: Content
+            required: false
+            hint: Page content
+  - name: categories
+    label: Categoriess
+    folder: category
+    create: true
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - widget: string
+        name: slug
+        label: Slug
+        required: false
+      - widget: string
+        name: title
+        label: Title
+        required: false
+      - widget: select
+        name: section
+        label: Section
+        required: false
+        options:
+          - Store
+          - About
+          - Home
+      - widget: object
+        name: menus
+        label: Categories Menus
+        required: false
+        hint: Which menus should this page show up in
+        fields:
+          - widget: object
+            name: main
+            label: Main menu item
+            required: false
+            hint: Main menu item for this page
+            fields:
+              - widget: string
+                name: title
+                label: Title
+                required: false
+                hint: The title of the menu item
+              - widget: number
+                name: weight
+                label: Weight
+                required: false
+                hint: Position for sorting
+                valueType: int
+              - widget: string
+                name: identifier
+                label: Identifier
+                required: false
+                hint: >-
+                  The identifier of a menu item could be used as a parent menu
+                  of another menu item
+          - widget: object
+            name: categories
+            label: Categories menu item
+            required: false
+            hint: Categories menu item for this page
+            fields:
+              - widget: string
+                name: title
+                label: Title
+                required: false
+                hint: The title of the menu item
+              - widget: number
+                name: weight
+                label: Weight
+                required: false
+                hint: Position for sorting
+                valueType: int
+              - widget: string
+                name: identifier
+                label: Identifier
+                required: false
+                hint: >-
+                  The identifier of a menu item could be used as a parent menu
+                  of another menu item
+      - widget: hidden
+        name: layout
+        label: Layout
+        required: true
+        default: category
+    filter:
+      field: layout
+      value: category
+  - name: promotion
+    label: Promotion
+    files:
+      - name: promotion
+        label: Promotion
+        file: _data/promotion.json
+        fields:
+          - widget: string
+            name: title
+            label: Title
+            required: false
+          - widget: string
+            name: subtitle
+            label: subtitle
+            required: false
+          - widget: object
+            name: image
+            label: Image
+            required: false
+            fields:
+              - widget: image
+                name: optimized
+                label: Optimized (WEBP or similar)
+                required: false
+              - widget: image
+                name: fallback
+                label: Fallback (JPG or PNG)
+                required: false
+          - widget: object
+            name: cta
+            label: Call to action
+            required: false
+            fields:
+              - widget: string
+                name: text
+                label: Text
+                required: false
+              - widget: string
+                name: link
+                label: Link
+                required: false
+  - name: testimonials
+    label: Testimonials
+    files:
+      - name: testimonials
+        label: Testimonials
+        file: _data/testimonials.json
+        fields:
+          - widget: list
+            name: data
+            label: Testimonials
+            required: false
+            hint: A list of testimonials
+            fields:
+              - widget: string
+                name: text
+                label: Text
+                required: false
+              - widget: object
+                name: author
+                label: Author
+                required: false
+                fields:
+                  - widget: string
+                    name: name
+                    label: Name
+                    required: false
+                  - widget: string
+                    name: location
+                    label: Location
+                    required: false
+  - name: products
+    label: Products
+    folder: products
+    create: true
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - widget: string
+        name: id
+        label: ID
+        required: false
+      - widget: string
+        name: title
+        label: Title
+        required: false
+      - widget: string
+        name: description
+        label: Description
+        required: false
+      - widget: string
+        name: price
+        label: Price
+        required: false
+      - widget: object
+        name: images
+        label: Images
+        required: false
+        fields:
+          - widget: object
+            name: default
+            label: Default
+            required: false
+            fields:
+              - widget: object
+                name: thumbnail
+                label: Thumbnail
+                required: false
+                fields:
+                  - widget: image
+                    name: optimized
+                    label: Optimized (WEBP or similar)
+                    required: false
+                  - widget: image
+                    name: fallback
+                    label: Fallback (JPG or PNG)
+                    required: false
+              - widget: object
+                name: original
+                label: Original
+                required: false
+                fields:
+                  - widget: image
+                    name: optimized
+                    label: Optimized (WEBP or similar)
+                    required: false
+                  - widget: image
+                    name: fallback
+                    label: Fallback (JPG or PNG)
+                    required: false
+          - widget: object
+            name: featured
+            label: Featured
+            required: false
+            fields:
+              - widget: object
+                name: thumbnail
+                label: Thumbnail
+                required: false
+                fields:
+                  - widget: image
+                    name: optimized
+                    label: Optimized (WEBP or similar)
+                    required: false
+                  - widget: image
+                    name: fallback
+                    label: Fallback (JPG or PNG)
+                    required: false
+              - widget: object
+                name: original
+                label: Original
+                required: false
+                fields:
+                  - widget: image
+                    name: optimized
+                    label: Optimized (WEBP or similar)
+                    required: false
+                  - widget: image
+                    name: fallback
+                    label: Fallback (JPG or PNG)
+                    required: false
+      - widget: select
+        name: category
+        label: Category
+        required: false
+        options:
+          - summer
+          - europe
+          - bigplants
+          - cactuses
+      - widget: boolean
+        name: featured
+        label: Featured
+        required: false
+      - widget: select
+        name: section
+        label: Section
+        required: false
+        options:
+          - Store
+          - About
+          - Home
+      - widget: object
+        name: menus
+        label: Product Menus
+        required: false
+        hint: Which menus should this page show up in
+        fields:
+          - widget: object
+            name: main
+            label: Main menu item
+            required: false
+            hint: Main menu item for this page
+            fields:
+              - widget: string
+                name: title
+                label: Title
+                required: false
+                hint: The title of the menu item
+              - widget: number
+                name: weight
+                label: Weight
+                required: false
+                hint: Position for sorting
+                valueType: int
+              - widget: string
+                name: identifier
+                label: Identifier
+                required: false
+                hint: >-
+                  The identifier of a menu item could be used as a parent menu
+                  of another menu item
+          - widget: object
+            name: categories
+            label: Categories menu item
+            required: false
+            hint: Categories menu item for this page
+            fields:
+              - widget: string
+                name: title
+                label: Title
+                required: false
+                hint: The title of the menu item
+              - widget: number
+                name: weight
+                label: Weight
+                required: false
+                hint: Position for sorting
+                valueType: int
+              - widget: string
+                name: identifier
+                label: Identifier
+                required: false
+                hint: >-
+                  The identifier of a menu item could be used as a parent menu
+                  of another menu item
+      - widget: hidden
+        name: layout
+        label: Layout
+        required: true
+        default: product
+      - widget: markdown
+        name: body
+        label: Content
+        required: false
+        hint: Page content
+    filter:
+      field: layout
+      value: product
+  - name: site_menus
+    label: Site Menus
+    files:
+      - name: site_menus
+        label: Site Menus
+        file: _data/menus.yml
+        fields:
+          - widget: list
+            name: main
+            label: Main menu
+            required: false
+            hint: List of items for Main menu
+            fields:
+              - widget: string
+                name: identifier
+                label: Identifier
+                required: true
+                hint: >-
+                  The identifier of a menu item could be used as a parent menu
+                  of another menu item
+              - widget: string
+                name: title
+                label: Title
+                required: true
+                hint: The title of the menu item
+              - widget: string
+                name: url
+                label: URL
+                required: true
+                hint: The URL the menu item links to
+              - widget: number
+                name: weight
+                label: Weight
+                required: false
+                hint: Position for sorting
+                valueType: int
+          - widget: list
+            name: categories
+            label: Categories menu
+            required: false
+            hint: List of items for Categories menu
+            fields:
+              - widget: string
+                name: identifier
+                label: Identifier
+                required: true
+                hint: >-
+                  The identifier of a menu item could be used as a parent menu
+                  of another menu item
+              - widget: string
+                name: title
+                label: Title
+                required: true
+                hint: The title of the menu item
+              - widget: string
+                name: url
+                label: URL
+                required: true
+                hint: The URL the menu item links to
+              - widget: number
+                name: weight
+                label: Weight
+                required: false
+                hint: Position for sorting
+                valueType: int
